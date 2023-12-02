@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do List</title>
+    <link rel="stylesheet" href="css/styles.css"> 
+
+    <!-- Include Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:100,300,400,500,700|Google+Sans+Text:400,500,700,400i,500i,700i|Google+Sans:400,500|Google+Sans+Display:400|Product+Sans:400&amp;lang=en" rel="stylesheet" nonce="">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header" id="heading">
+            <h1>-Things to do-</h1>
+            <h3><%= currentDate %></h3>
+        </div>
+        <div class="main-box">
+            <p class="greeting"><%= greeting %> </p>
+            <% for (var i = 0; i < itemList.length; i++) { %>
+                <div class="task-item">
+                    <input type="checkbox" id="task<%= i %>" onclick="deleteTask('<%= i %>')">
+                    <p><%= itemList[i] %></p>
+                </div>
+            <% } %>
+            <form class="task-item" action="/" method="post" onsubmit="return validateTaskForm()">
+                <input type="text" name="taskName" placeholder="Add your task" autocomplete="off">
+                <button type="submit" name="button">+</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        function deleteTask(index) {
+            fetch(`/delete/${index}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload(); 
+                } else {
+                    console.error('Error deleting task');
+                }
+            });
+        }
+
+        function validateTaskForm() {
+            var taskInput = document.getElementsByName("taskName")[0].value.trim();
+
+            if (taskInput === "") {
+                alert("Task cannot be empty!"); 
+                return false; 
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

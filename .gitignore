@@ -1,0 +1,12 @@
+# .gitignore
+
+# Node.js
+node_modules/
+*.log
+npm-debug.log*
+
+# Visual Studio Code
+.vscode/
+
+# Dependency directories
+jspm_packages/
